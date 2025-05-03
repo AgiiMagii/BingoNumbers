@@ -19,13 +19,17 @@ namespace MajasDarbsSuperBingo
         static List<int> bingoNumber()
         {
             List<int> bingoN = new List<int>();
-            for (int i = 1; i <= numCount; i++)
+            for (int i = 1; i <= numCount;)
             {
                 int generatedNumb = rnd.Next(1, 100);
-                bingoN.Add(generatedNumb);
+                if (!bingoN.Contains(generatedNumb))
+                {
+                    bingoN.Add(generatedNumb);
+                    i++;
+                }
             }
             return bingoN;
-        } //Make a list of randomly generated integers
+        } //Make a list of randomly generated unique integers
         static List<int> guessNumber()
         {
             List<int> guessN = new List<int>();
@@ -61,7 +65,7 @@ namespace MajasDarbsSuperBingo
             }
             return guessN;
         } //Make a list of user-entered integers
-        static int yourPoints(List<int> bingo, List<int> mini)
+        static int yourPoints(List<int> bingo, List<int> guess)
         {
             Console.ForegroundColor= ConsoleColor.Yellow;
             Console.WriteLine("\n     LET'S SEE HOW YOU DID:\n");
@@ -69,7 +73,7 @@ namespace MajasDarbsSuperBingo
             Console.Write("Bingo numbers \t");
             foreach (int generatedNumber in bingo)
             {
-                if (mini.Contains(generatedNumber))
+                if (guess.Contains(generatedNumber))
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(generatedNumber + "\t");
@@ -82,18 +86,18 @@ namespace MajasDarbsSuperBingo
             }
             int points = 0;
             Console.Write("\nYour numbers \t");
-            foreach (int guess in mini)
+            foreach (int guessN in guess)
             {
-                if (bingo.Contains(guess))
+                if (bingo.Contains(guessN))
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(guess + "\t");
+                    Console.Write(guessN + "\t");
                     Console.ResetColor();
                     points++;
                 }
                 else
                 {
-                    Console.Write(guess + "\t");
+                    Console.Write(guessN + "\t");
                 }
             }
             return points;
