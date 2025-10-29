@@ -7,5 +7,5 @@ A FOR loop is being used to store the right amount of both - generated and input
 To ensure that the input is a number, in a correct range and unique, input validation is implemented using IF conditions. Only valid entries are added to lists.
 A FOREACH loop is being used to find matching numbers and adding the color for user's convenience. The program uses IF-ELSE statements to show messages according to the player's score.
 
-The goal was to make the code as clean and logical as possible.
+This game was developed to practice loops, conditional statements, and input validation.
 
