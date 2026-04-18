@@ -1,15 +1,74 @@
-# Bingo Numbers - a C# console based game
-This is a simple number guessing game developed as a homework assignment. 
+# 🎯 Bingo Numbers – C# Console Game
 
-## Overview
-The program randomly generates 10 unique numbers between 1 and 99. Then the user is asked to input 10 unique numbers within the same range.
-After all numbers are entered, the program compares user's numbers with the generated ones and calculates how many numbers are matching. One match earns a point. Also user gets a message depending on earned points.
+A simple console-based number guessing game developed as a learning project in C#.
 
-## Programming Techniques
-A **FOR loop** is being used to store the right amount of both - generated and input values into the List<int> collections.
-To ensure that the input is a number, in a correct range and unique, input validation is implemented using **IF conditions**. Only valid entries are added to lists.
-A **FOREACH loop** is being used to find matching numbers and adding the color for user's convenience. The program uses **IF-ELSE statements** to show messages according to the player's score.
+---
 
-## Goal
-This game was developed to practice loops, conditional statements, and input validation. 
+## 🧠 Overview
+
+The program generates **10 unique random numbers (1–99)**.  
+The user is then asked to enter **10 unique numbers within the same range**.
+
+After input is completed, the program compares both sets and calculates how many numbers match.  
+Each match gives **1 point**, and the user receives a message based on their final score.
+
+---
+
+## ⚙️ How it works
+
+- The game generates a set of unique random numbers using `HashSet<int>`
+- The user inputs their guesses with full validation:
+  - Must be a number
+  - Must be in range 1–99
+  - Must be unique
+- After input, both sets are compared
+- Matching numbers are highlighted in color in the console
+- Final score message is displayed based on performance
+
+---
+
+## 🛠 Programming techniques used
+
+- `HashSet<int>` for automatic uniqueness handling
+- `while` loops for controlled input and generation
+- Input validation using `if / else` conditions
+- `foreach` loops for comparison and output
+- `switch expression` for clean message handling (C# 9.0 feature)
+- Console color output via reusable helper method (`PrintWithColor`)
+- Refactored structure with separated responsibilities per method
+
+---
+
+## 🚀 Refactoring improvements
+
+This version includes several improvements over the initial implementation:
+
+- Replaced `List<int>` with `HashSet<int>` for better performance and simplicity
+- Removed manual duplicate checks (handled by `HashSet`)
+- Improved naming conventions (clear and descriptive method names)
+- Reduced code duplication by introducing reusable helper methods
+- Simplified point calculation logic using LINQ-style approach
+- Cleaned up input validation flow for better readability
+- Made `Random` and configuration values (`numCount`) readonly
+- Improved console output formatting and user experience
+- Updated project to use **C# 9.0 language features**
+
+---
+
+## 🎯 Purpose of the project
+
+This project was created as a practice exercise to improve understanding of:
+
+- Loops (`while`, `foreach`)
+- Conditional logic (`if / else`)
+- Input validation
+- Collections (`HashSet`)
+- Code refactoring and readability
+- Basic game logic design in C#
+
+---
+
+## ✨ Result
+
+A simple but structured console game that demonstrates clean coding practices, improved logic flow, and modern C# features. 
 
