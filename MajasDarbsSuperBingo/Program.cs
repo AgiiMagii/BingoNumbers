@@ -5,142 +5,118 @@ namespace MajasDarbsSuperBingo
 {
     internal class Program
     {
-        static Random rnd = new Random();
-        static int numCount = 10;
-        static void Main(string[] args)
+        static readonly Random rnd = new Random();
+        static readonly int numCount = 10;
+        static void Main()
         {
-            List<int> bingo = bingoNumber();
-            List<int> guess = guessNumber();
+            HashSet<int> bingo = BingoNumber();
+            HashSet<int> guessList = GuessNumber();
             Console.Clear();
-            int points = yourPoints(bingo, guess);
-            messages(points);
+            int points = YourPoints(bingo, guessList);
+            Messages(points);
             Console.ReadLine();
         }
-        static List<int> bingoNumber()
+        static HashSet<int> BingoNumber() //Make a list of randomly generated unique integers
         {
-            List<int> bingoN = new List<int>();
-            for (int i = 1; i <= numCount;)
+            HashSet<int> bingo = new HashSet<int>();
+
+            while (bingo.Count < numCount)
             {
-                int generatedNumb = rnd.Next(1, 100);
-                if (!bingoN.Contains(generatedNumb))
-                {
-                    bingoN.Add(generatedNumb);
-                    i++;
-                }
+                bingo.Add(rnd.Next(1, 100));
             }
-            return bingoN;
-        } //Make a list of randomly generated unique integers
-        static List<int> guessNumber()
+
+            return bingo;
+        }
+        static HashSet<int> GuessNumber() //Make a list of user-entered integers
         {
-            List<int> guessN = new List<int>();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n     GUESS THE NUMBERS!\n");
-            Console.ResetColor();
+            HashSet<int> guessList = new HashSet<int>();
+            PrintWithColor("\n     GUESS THE NUMBERS!\n", color: "Yellow");
             Console.WriteLine($"(write {numCount} unique integers in range 1 to 99)\n");
-            
-            for (int j = 1; j <= numCount;)
+
+            int j = 1;
+            while (j <= numCount)
             {
-                Console.Write($"{j}. ");
-                int guess;
-                bool result = int.TryParse(Console.ReadLine(), out guess);
-                
-                if (guess < 1 || guess >= 100)
-                {
-                    Console.WriteLine("Invalid integer! Try again!");
-                }
-                else if (result == false)
+                Console.Write($" {j}. ");
+                string input = Console.ReadLine();
+
+                if (!int.TryParse(input, out int guessN))
                 {
                     Console.WriteLine("Not an integer! Try again!");
                 }
-                else if (guessN.Contains(guess))
+                else if (guessN < 1 || guessN >= 100)
+                {
+                    Console.WriteLine("Invalid integer! Try again!");
+                }
+                else if (!guessList.Add(guessN))
                 {
                     Console.WriteLine("Not unique integer! Try again!");
                 }
                 else
                 {
                     j++;
-                    guessN.Add(guess);
                 }
-                
             }
-            return guessN;
-        } //Make a list of user-entered integers
-        static int yourPoints(List<int> bingo, List<int> guess)
+            return guessList;
+        }
+        static int YourPoints(HashSet<int> bingo, HashSet<int> guessList) //Count matching integers, show the result
         {
-            Console.ForegroundColor= ConsoleColor.Yellow;
-            Console.WriteLine("\n     LET'S SEE HOW YOU DID:\n");
-            Console.ResetColor();
-            Console.Write("Bingo numbers \t");
-            foreach (int generatedNumber in bingo)
+            PrintWithColor("\n     LET'S SEE HOW YOU DID:\n", color: "Yellow");
+
+            int points = 0;
+
+            Console.Write("\n Bingo numbers \t");
+            foreach (int number in bingo)
             {
-                if (guess.Contains(generatedNumber))
+                if (guessList.Contains(number))
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(generatedNumber + "\t");
-                    Console.ResetColor();
+                    PrintWithColor(number, color: "Green");
                 }
                 else
                 {
-                    Console.Write(generatedNumber + "\t");
+                    Console.Write(number + "\t");
                 }
             }
-            int points = 0;
-            Console.Write("\nYour numbers \t");
-            foreach (int guessN in guess)
+
+            Console.Write("\n Your numbers \t");
+            foreach (int number in guessList)
             {
-                if (bingo.Contains(guessN))
+                if (bingo.Contains(number))
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(guessN + "\t");
-                    Console.ResetColor();
+                    PrintWithColor(number, color: "Green");
                     points++;
                 }
                 else
                 {
-                    Console.Write(guessN + "\t");
+                    Console.Write(number + "\t");
                 }
             }
+
             return points;
-        } //Count matching integers, show the result
-        static void messages(int points)
+        }
+        static void Messages(int points) //Show comments depending on gathered points
         {
-            Console.WriteLine("\n");
+            Console.WriteLine($"\n\n You earned {points} {(points == 1 ? "point" : "points")}");
+            string message = points switch
             {
-                if (points == 0)
-                {
-                    Console.WriteLine($"You earned {points} points");
-                    Console.WriteLine(" COME ON... YOU CAN DO BETTER!!");
-                }
-                else if (points == 1)
-                {
-                    Console.WriteLine($"You earned {points} point");
-                    Console.WriteLine(" COME ON... YOU CAN DO BETTER!!");
-                }
-                else if (points >= 1 && points < 3)
-                {
-                    Console.WriteLine($"You earned {points} points");
-                    Console.WriteLine(" KEEP TRYING! YOU CAN DO IT!!");
-                }
-                else if (points >= 3 && points < 5)
-                {
-                    Console.WriteLine($"You earned {points} points");
-                    Console.WriteLine(" OK! GOOD!");
-                }
-                else if (points >= 5 && points < 7)
-                {
-                    Console.WriteLine($"You earned {points} points");
-                    Console.WriteLine(" GOOOOOD!!");
-                }
-                else if (points == 7)
-                {
-                    Console.WriteLine($"You earned {points} points");
-                    Console.WriteLine(" !!! BINGOOOO !!!");
-                }
-                else
-                {
-                    Console.WriteLine("OOPS!! Something went wrong!!");
-                }
+                0 => " COME ON... YOU CAN DO BETTER!!",
+                < 3 => " KEEP TRYING! YOU CAN DO IT!!",
+                < 5 => " OK! GOOD!",
+                < 7 => " GOOOOOD!!",
+                7 => " !!! BINGOOOO !!!",
+                _ => " OOPS!! Something went wrong!!"
+            };
+            Console.WriteLine(message);
+        }
+        static void PrintWithColor(object value, string color = "White") //Print text in specified color, default is white
+        {
+            if (!Enum.TryParse(color, true, out ConsoleColor consoleColor))
+            {
+                consoleColor = ConsoleColor.White;
             }
-        } //Show comments depending on gathered points
+            Console.ForegroundColor = consoleColor;
+
+            Console.Write(value + "\t");
+            Console.ResetColor();
+        }
     }
 }
